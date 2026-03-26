@@ -1,1 +1,2 @@
 print("LOGOWANIE!")
+print("Tomek")
