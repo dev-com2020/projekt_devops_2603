@@ -1,1 +1,1 @@
-print("test pliku")
+print("Karol")
