@@ -1,2 +1,1 @@
 print("LOGOWANIE!")
-print("Tomek")
