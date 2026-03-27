@@ -24,6 +24,7 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                 source venv/bin/activate
+                cd my-flask-app
                 pkill -f "python3 app.py" || true
                 nohup venv/bin/python3 app.py > app.log 2>&1 &
                 sleep 2
