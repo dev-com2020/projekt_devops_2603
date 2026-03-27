@@ -1,0 +1,31 @@
+pipeline {
+    agent { label 'ubuntu' }
+
+    stages {
+        stage('Testy') {
+            matrix {
+                axes {
+                    axis {
+                        name 'PYTHON_VERSION'
+                        values '3.10', '3.11', '3.12'
+                    }
+                    axis {
+                        name 'FLASK_VERSION'
+                        values '2.3', '3.0'
+                    }
+                }
+                stages {
+                    stage('Test') {
+                        steps {
+                            sh """
+                                python${PYTHON_VERSION} -m venv venv
+                                venv/bin/pip install flask==${FLASK_VERSION} pytest
+                                venv/bin/pytest test_app.py -v
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
