@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('instalacja zaleznosci') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+        stage('testy') {
+            steps {
+                sh '''
+                    pytest -v
+                '''
+            }
+        }
+
+        stage("deploy") {
+            steps {
+                sh '''
+                pkill -f "python3 app.py" || true
+                nohup venv/bin/python3 app.py > app.log 2>&1 &
+                sleep 2
+                curl -sf http://localhost:5000/health
+                '''
+            }
+        }
+    }
+    post {
+        success {
+            echo "Testy ok!"
+        }
+        failure {
+            echo "testy nie przeszly!"
+        }
+    }
+}
