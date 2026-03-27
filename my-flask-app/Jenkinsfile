@@ -23,6 +23,7 @@ pipeline {
         stage("deploy") {
             steps {
                 sh '''
+                . venv/bin/activate
                 pkill -f "python3 app.py" || true
                 nohup venv/bin/python3 app.py > app.log 2>&1 &
                 sleep 2
