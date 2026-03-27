@@ -22,11 +22,12 @@ pipeline {
 
         stage("deploy") {
             steps {
-                sh '''
-                . venv/bin/activate
+                sh '''#!/bin/bash
+                source venv/bin/activate
                 pkill -f "python3 app.py" || true
                 nohup venv/bin/python3 app.py > app.log 2>&1 &
                 sleep 2
+                cat app.log
                 curl -sf http://localhost:5000/health
                 '''
             }
