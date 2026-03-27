@@ -1,9 +1,6 @@
 pipeline {
     agent {label 'ubuntu-2' }
 
-    environment {
-        APP_DIR = "${WORKSPACE}/my-flask-app"
-    }
 
     stages {
         stage('instalacja zaleznosci') {
@@ -28,9 +25,9 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                     pkill -f "python3 app.py" || true
-                    nohup ${APP_DIR}/venv/bin/python3 ${APP_DIR}/app.py > ${APP_DIR}/app.log 2>&1 &
+                    nohup venv/bin/python3 app.py > app.log 2>&1 &
                     sleep 3
-                    cat ${APP_DIR}/app.log
+                    cat app.log
                     curl -sf http://localhost:5000/health
                 '''
             }
